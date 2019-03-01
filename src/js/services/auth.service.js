@@ -59,4 +59,15 @@ export class AuthService {
                 .catch((err) => reject(err));
         });
     }
+
+    //the method makes a request to the specified url
+    getHomeInner() {
+        const http = new Http();
+
+        return new Promise((resolve, reject) => {
+            http.get(`${ENV.apiUrl}/public/home`)
+                .then((response) => resolve(response))
+                .catch((err) => reject(err));
+        });
+    }
 }

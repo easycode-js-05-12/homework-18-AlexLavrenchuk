@@ -121,6 +121,7 @@ export class NewsComponent {
         }
         .following:hover {
             color: #fff;
+            box-shadow: inset 0 0 40px 0 #ff00b2;
             background: linear-gradient(to right,#7303c0 0,#ec38bc 76%,#fa66cb 100%);
         }
         .following:focus {
@@ -140,10 +141,6 @@ export class NewsComponent {
 
     //method creates markup for one news and setting data
     _template(user) {
-        let date = Date.now();
-        date -= Date.parse(user.date); //here we calculate the time difference
-        date = (date / (60 * 60 * 24 * 1000)).toFixed(0); //here we count how many days and remove the fraction
-
         return `
         <div class="card-news">
                 <div class="info">
@@ -154,7 +151,7 @@ export class NewsComponent {
                         <h3>${user.owner.full_name}</h3>
                         <h5>${user.owner.country}</h5>
                         <h4>uploaded ${user.pictures.length} photos</h4>
-                        <p>a ${date} ${(+date === 1) ? "day" : "days"} ago</p>
+                        <p>${this._timeAfter(user.date)}</p>
                     </div>
                     <button class="following">following</button>
                 </div>
@@ -163,6 +160,28 @@ export class NewsComponent {
                 </div>
             </div>
         `;
+    }
+
+    //time difference calculation
+    _timeAfter(publicationTime) {
+        if (!publicationTime) return;
+        
+        let milliseconds = Date.now();
+        milliseconds -= Date.parse(publicationTime);
+
+        //handed down values for understanding the comparison logic
+        const minute = 60000;
+        const hour = 3600000;
+        const day = 86400000;
+        const week = 604800000;
+        const month = 2592000000;
+
+        if (milliseconds < minute) return 'Less than a minute ago';
+        if (milliseconds >= minute && milliseconds < hour) return ((milliseconds / 1000) / 60).toFixed(0) + ((((milliseconds / 1000) / 60).toFixed(0) === "1") ? ' minute ago' : ' minutes ago');
+        if (milliseconds >= hour && milliseconds < day) return ((milliseconds / 1000) / 60 / 60).toFixed(0) + ((((milliseconds / 1000) / 60 / 60).toFixed(0) === "1") ? ' hour ago' : ' hours ago');
+        if (milliseconds >= day && milliseconds < week) return ((milliseconds / 1000) / 60 / 60 / 24).toFixed(0) + ((((milliseconds / 1000) / 60 / 60 / 24).toFixed(0) === "1") ? ' day ago' : ' days ago');
+        if (milliseconds >= week && milliseconds < month) return ((milliseconds / 1000) / 60 / 60 / 24 / 7).toFixed(0) + ((((milliseconds / 1000) / 60 / 60 / 24 / 7).toFixed(0) === "1") ?' week ago': ' weeks ago');
+        if (milliseconds >= month) return 'More than a month';
     }
 
     afterRender() {
