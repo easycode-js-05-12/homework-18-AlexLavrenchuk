@@ -1,14 +1,14 @@
-import { AuthService } from './../services/auth.service';
+import { HomeService } from './../services/home.service';
 
 export class HomeComponent {
     constructor() {
-        this._authService = new AuthService();
+        this._homeService = new HomeService();
         this._homeInner;
     }
 
     //the method calls the request, waits for the response and saves to the variable _homeInner
     async beforeRender() {
-        this._homeInner = await this._authService.getHomeInner();
+        this._homeInner = await this._homeService.getHomeInner();
 
         //add link for fonts
         const head = document.querySelector('head');

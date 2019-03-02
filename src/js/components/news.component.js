@@ -1,8 +1,8 @@
-import { AuthService } from './../services/auth.service';
+import { NewsService } from './../services/news.service';
 
 export class NewsComponent {
     constructor() {
-        this._authService = new AuthService();
+        this._newsService = new NewsService();
 
         this._news;
     }

@@ -40,34 +40,6 @@ export class AuthService {
                     resolve(response);
                 })
                 .catch((err) => reject(err));
-
-        });
-    }
-
-    //the method makes the get request and passes the token in the header
-    getNews(token) {
-        const http = new Http();
-
-        return new Promise((resolve, reject) => {
-            http.get(`${ENV.apiUrl}/public/news`, {
-                type: "GET",
-                headers: {
-                    "x-access-token": token
-                }
-            })
-                .then((response) => resolve(response))
-                .catch((err) => reject(err));
-        });
-    }
-
-    //the method makes a request to the specified url
-    getHomeInner() {
-        const http = new Http();
-
-        return new Promise((resolve, reject) => {
-            http.get(`${ENV.apiUrl}/public/home`)
-                .then((response) => resolve(response))
-                .catch((err) => reject(err));
         });
     }
 }
